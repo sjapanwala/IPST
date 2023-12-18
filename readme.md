@@ -9,5 +9,5 @@
 - IP Search #2 - Uses Either IPV4 or IPV6. This function can utilize both IP formats and outputs alot more information. This function is more useful in terms of information and is versitile in different formats.
 - Geolocation - Uses Longitide and Latitudes to locate the continent information of the IP, shows you a graphic of which continent the IP is located in. (Note, This feature does not have support for all continents.) (Current Support [North America, Some of Europe, Oceana, Some of Asia])
 
-### PLease Inform Me of Any Bugs or Errors that are needed to be fixed.
+### Please Inform Me of Any Bugs or Errors that are needed to be fixed.
 
