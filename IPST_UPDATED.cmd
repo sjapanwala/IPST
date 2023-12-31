@@ -39,7 +39,7 @@ set autosavefilename=savefile1
 ::/_____/_____/ /| |/ /___/ /___/ ____/  / /_/ / /_/ / / /_____/_____/
 ::           /_/ |_/_____/_____/_/       \____/\____/ /_/             
 ::                                                                 
-set version=[0.1]
+set version=[0.2]
 if exist developerfiles.dev set developermode=[Active]
 set developermode=[Inactive]
 set ipvformatsaccepted=[IPV4, IPV6]
