@@ -3,8 +3,30 @@ chcp 65001
 title IP Locator Advanced
 :startscreen
 mode 45,18
+rem  -----------------------------------------------------------
+rem 
+rem     __                                 ________                               
+rem    / /   ____  ____ ______     __     / ____/ /_  ____ _____  ____ ____  _____
+rem   / /   / __ \/ __ `/ ___/  __/ /_   / /   / __ \/ __ `/ __ \/ __ `/ _ \/ ___/
+rem  / /___/ /_/ / /_/ (__  )  /_  __/  / /___/ / / / /_/ / / / / /_/ /  __(__  ) 
+rem /_____/\____/\__, /____/    /_/     \____/_/ /_/\__,_/_/ /_/\__, /\___/____/  
+rem             /____/                                         /____/             
+:: UPDATES AND CHANGES
+::  Version 0.1
+:: - Added All Features. Launch Versions
+
+::  Version 0.2
+:: - Added An Activation Key. Will be allowed to track users and keep an organized database.
+:: - Developers will be able to override the activationkey, and will be able to add and modify without the database going crazy.
+:: - Added an Updates and Status Section.
+:: - Removed "Help", as it was not needed and the "Readme.md" file was a better alternative.
+:: - Even though an update and status section has been added, the buttons dont really do anything other than the "wipe data" button. it does show update files and all that but does not really do anything
+rem -----------------------------------------------------------
+
+
+
 :: Modifyable Variables - You Can Modify These Variables
-set activationcode=0
+
 set safeip=1.1.1.1
 set autosavestatus=false
 set autosavefilename=savefile1
@@ -39,8 +61,25 @@ FOR /F %%c IN ('curl https://icanhazip.com/') DO set homeipv6=%%c
 FOR /F %%d IN ('tzutil /g') DO set TIMEZONE=%%d
 FOR /F %%e IN ('curl https://ipapi.co/%homeipv4%/country/') DO set country=%%e
 FOR /F %%f IN ('curl https://ipapi.co/%homeipv4%/org/') DO set networkorg=%%f
+FOR /F %%h IN ('curl https://ipapi.co/%targetip%/country/') DO set geolocation=%%h
 set targetip=%INITIALIPV4%
 set Iptype=IPV4
+:: activation
+:: check if activatedx
+REM ACTIVATION FOR THIS BATCH
+REM BATCH #    ║ ACTIVATION KEY #   ║ DATE VALID
+rem -----------║--------------------║-------------
+rem    1       ║ 001122334455       ║ ALLTIME
+:: activation vars
+set activationvbatchnumber=1
+set activationkey=001122334455
+set activationexpire=never
+:: check activation status
+if exist activationkey.ipst set activationkeystatus=[Active] && goto startfile
+if exist developerfiles.dev goto startfile
+if not exist activationkey.ipst goto activatesoftware
+goto activatesoftware
+:startfile
 :: github connection
 rem coming in the future
 :: autosave functionality
@@ -49,6 +88,7 @@ if %autosavestatus%==false set autosave=off
 :: formatibilityy of autosave
 if %autosavestatus%==false set autosavedisplay=[False]
 if %autosavestatus%==true set autosavedisplay=[True]
+set developercode=0000
 :: countires defined
 :mainscreengraphic
 :mainscreen
@@ -67,7 +107,7 @@ echo [40;37m║ [[40;31m2[40;37m] IP INFO {IPV4 + IPV6}                [40;3
 echo [40;37m║ [[40;31m3[40;37m] Change Target                        [40;37m║ 
 echo [40;37m║ [[40;31m4[40;37m] GeoLocation                          [40;37m║
 echo [40;37m║ [[40;31m5[40;37m] Settings                             [40;37m║
-echo [40;37m║ [[40;31m6[40;37m] Help                                 [40;37m║
+echo [40;37m║ [[40;31m6[40;37m] Updates + Status                     [40;37m║
 echo [40;37m║                                          [40;37m║ 
 echo [40;37m╚══════════════════════════════════════════╝
 set choice=
@@ -78,7 +118,7 @@ if %choice%==2 goto site2
 if %choice%==3 goto changeip
 if %choice%==4 goto geolocation
 if %choice%==5 goto settings
-if %choice%==6 goto help
+if %choice%==6 goto updates
 goto wronginput
 
 :wronginput
@@ -202,7 +242,6 @@ goto mainscreen
 :geolocation
 cls
 mode 80,25
-FOR /F %%h IN ('curl https://ipapi.co/%targetip%/country/') DO set geolocation=%%h
 if %geolocation%==US goto NA
 if %geolocation%==CA goto NA 
 if %geolocation%==MX goto NA
@@ -210,6 +249,7 @@ if %geolocation%==DE goto EU
 if %geolocation%==AU goto OCE
 if %geolocation%==PK goto ASIA
 if %geolocation%==RU goto ASIA
+goto nogeolocation
 ::chcp 65001
 ::mode 80,25
 ::cls
@@ -410,16 +450,149 @@ echo Computer Name---------------:%computername%
 echo User Name-------------------:%username%
 echo Country---------------------:%country%
 echo Time Zone-------------------:%TIMEZONE%
-echo Activation Code-------------:%activationcode%
+echo Activation Status-----------:%activationkeystatus%
+echo Activation Key--------------:%activationkey%
 echo GitHub Connection-----------:Not Available
+pause 
+goto mainscreen
+
+:activatesoftware
+goto activationerror && goto activatesoftware2
+:activatesoftware2
+cls
+set autosavefilename=savefile1
+mode 45,20
+cls
+echo [40;37m╔══════════════════════════════════════════╗
+echo [40;37m║
+echo [40;37m║ ┍Target IP [[40;32m%iptype%[40;37m]
+echo [40;37m║ └[[40;34m%targetip%[40;37m]
+echo [40;37m║
+echo [40;37m╠══════════════════════════════════════════╗ 
+echo [40;37m║                                          [40;37m║
+echo [40;37m║ [40;31m Please Activate Before Use.             [40;37m║
+echo [40;37m║ [40;31m Activation Key Can Be Bought or         [40;37m║
+echo [40;37m║ [40;31m Provided.                               [40;37m║ 
+echo [40;37m║                                          [40;37m║
+echo [40;37m║  [40;37m(1) Enter Activation Key                [40;37m║
+echo [40;37m║                                          [40;37m║
+echo [40;37m║                                          [40;37m║ 
+echo [40;37m╚══════════════════════════════════════════╝
+set activationchoice=
+set /p activationchoice=→ 
+
+if %activationchoice%==1 goto activatekey
+if %activationchoice%==0 goto override
+if %activattionchoice%==onetimeuse goto onetimeuse
+goto activationerror
+
+:onetimeuse
+goto mainscreen
+
+:activatekey
+cls
+echo [40;37m╔══════════════════════════════════════════╗ 
+echo [40;37m║                                          [40;37m║
+echo [40;37m║ [40;31m Please Enter Activation Key             [40;37m║
+echo [40;37m║ [40;33m [xxxxxxxxxx]                            [40;37m║
+echo [40;37m║                                          [40;37m║          
+echo [40;37m╚══════════════════════════════════════════╝
+echo.
+set /p userenteredactivationkey=→[40;33m 
+if %userenteredactivationkey%==%activationkey% goto activated
+goto keynotverified
+
+:activated
+cls
+echo KEY VALIDATED.
+echo. 
+echo ASSIGNING %activationkey% to %username%...
+echo -----------------------------------------------------------
+echo.
+echo Please Enter The Following Details To Create Support Reciept.
+set /p useremail=Please Enter An Email Address: 
+set /p usergovname=Please Enter Your Name: 
+set /p userage=Please Enter Your Age: 
+echo. 
+echo -----------------------------------------------------------
+echo Making Support Reciept.
+echo Support Reciept>>supportrecipt.txt
+echo ----------------------------------------------------------->>supportrecipt.txt
+echo Personal Details - %computername%>>supportrecipt.txt
+echo ----------------------------------------------------------->>supportrecipt.txt
+echo Email: %useremail%>>supportrecipt.txt
+echo Name: %usergovname%>>supportrecipt.txt
+echo Home IPv4: %homeipv4%>>supportrecipt.txt
+echo Home IPv6: %homeipv6%>>supportrecipt.txt
+echo Region: %geolocation%>>supportrecipt.txt
+echo Timezone: %timezone%>>supportrecipt.txt
+echo ----------------------------------------------------------->>supportrecipt.txt
+echo App Data - %version%>>supportrecipt.txt
+echo ----------------------------------------------------------->>supportrecipt.txt
+echo Version: %version%>>supportrecipt.txt
+echo Dev Mode: %developermode%>>supportrecipt.txt
+echo Device Name: %computername%>>supportrecipt.txt
+echo Activation Code: %activationcode%>>supportrecipt.txt
+echo ----------------------------------------------------------->>supportrecipt.txt
+echo For Issues And Trouble Shooting, Please Refer to "Readme.md">>supportrecipt.txt
+echo ----------------------------------------------------------->>supportrecipt.txt
+echo %activationkey%>>activationkey.ipst
+echo.
+echo Done!
+pause
+goto mainscreen
+
+:override
+cls
+echo //OVERRIDE
+echo -----------------------------------------------------------
+echo Please Enter Your Details
+echo -----------------------------------------------------------
+echo.
+set /p userdevelopercode=
+if %userdevelopercode%==%developercode% goto developermodesetup
+goto activatesoftware
+:developermodesetup
+cls
+echo Granting Developermode 
+echo developerfiles.dev>>developerfiles.dev
+timeout 3>nul
+goto mainscreen
+
+
 
 pause>nul
 goto mainscreen
-:help
+:updates
 cls
-echo Welcome To Help
-echo - - - - - - - - - - - - - -
+set recentupdate=N/A
+echo Last Updated - [%recentupdate%]
+echo --------------------------------------------
+if exist updates.ipst echo [40;32mUPDATES AVAILABLE[40;37m
+if not exist updates.ipst echo [40;31mNO UPDATES AVAILABLE[40;37m
+echo --------------------------------------------
+echo (1) Apply Updates
+echo (2) Diagnostics
+echo (3) Connect to IP DataBase
+echo (4) Wipe Data
+echo --------------------------------------------
+set /p updatechoice=→ 
+if %updatechoice%==1 goto applyupdate
+if %updatechoice%==2 goto diagnose
+if %updatechoice%==3 goto connect
+if %updatechoice%==4 goto deletefiles
 
+:applyupdates
+:diagnose
+:connect
+:deletefiles
+del "activationkey.ipst"
+del "supportreciept.txt"
+goto startscreen
+
+
+::errror keys
+::error keys starts
 :wrongformat1
 echo x=msgbox("Wrong IPV Format. This Function Requires IPV4. Please Check Your Format For Writing Errors" ,16, "IP Format Error") >> msgbox.vbs
 start msgbox.vbs
@@ -461,3 +634,27 @@ start msgbox.vbs
 timeout 1 >nul
 del msgbox.vbs
 goto mainscreen
+
+:nogeolocation
+echo x=msgbox("Sorry The GeoLocation For [%targetip%] Is not Available Or is Not Recorded. Please Note, All Countries Geolocation Have Not Been Uploaded, Future Updates Will Solve This Issue." ,16, "GeoLocation Not Found") >> msgbox.vbs
+start msgbox.vbs
+timeout 1 >nul
+del msgbox.vbs
+goto mainscreen
+
+:activationerror
+echo x=msgbox("This Software Cannot Be Used Without Activation. Please Use Activation Key Given, Or Purchase An Activation Key" ,16, "Please Activate") >> msgbox.vbs
+start msgbox.vbs
+timeout 1 >nul
+del msgbox.vbs
+goto activatesoftware2
+
+:keynotverified
+echo x=msgbox("The Activation Key Provided Cannot Be Verified. Please Double Check The Key Entered, Or Check Activation Date Valid" ,16, "Key Not Accessable") >> msgbox.vbs
+start msgbox.vbs
+timeout 1 >nul
+del msgbox.vbs
+goto activatekey
+
+::errorkeysend
+
