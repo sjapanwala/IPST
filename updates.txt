@@ -1,0 +1,36 @@
+    __                                 ________                               
+   / /   ____  ____ ______     __     / ____/ /_  ____ _____  ____ ____  _____
+  / /   / __ \/ __ `/ ___/  __/ /_   / /   / __ \/ __ `/ __ \/ __ `/ _ \/ ___/
+ / /___/ /_/ / /_/ (__  )  /_  __/  / /___/ / / / /_/ / / / / /_/ /  __(__  ) 
+/_____/\____/\__, /____/    /_/     \____/_/ /_/\__,_/_/ /_/\__, /\___/____/  
+            /____/                                         /____/             
+
+-----------------------------------------------------------------------------
+       LOGS AND CHANGES. NEW UPDATES AND VERSION INFORMATION
+-----------------------------------------------------------------------------
+
+--------------------------------Version 0.1---------------------------------
+- Launch Version
+- All Features Added
+- Free To Use
+--------------------------------Version 0.2---------------------------------
+> Added Activation Key.
+  - You will be required to purchase a key, or will be required to input a provided key
+  - To use the software without a key, use the command "onetimeuse" where it asks you to enter a key. No data will be saved and alot of resources will be unavailabe.
+> Added "Updates + Status" Section
+  - Updates will be found here. when an update is released, you can download it from the github and move it to the file the program is saved in and it will be detected.
+    + You can always download a new file version instead. But settings you have modified will be saved and you dont havce to reset everything
+> Added Developer Mode
+  - The Use of Developer Mode Is Strictly for development.
+  - Provides No Extra Features as of now
+  - Shows Extra Debug Commands
+  - Developer Code "0000"
+  - Developer Username "root"
+  - Developer Passcode "0000" (same as developer code)
+> Added Connection to IP Data Base
+  - the software without a connection is usable, but has a connection limit (~20 requests perday, each launch uses 5 requests)
+  - Connecting to the database allows you to send more connections as you are connected to IPST servers.
+  - Sending a your "supportreciept.txt" to us will give you access to the server, free of cost (as of now, if you are a member and price changes, you will not be required to pay)
+> Removed "Help" as "Readme.md" was a better alternative
+
+
