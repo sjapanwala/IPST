@@ -45,12 +45,12 @@ set credit=sjapanwala
 ::           /_/ |_/_____/_____/_/       \____/\____/ /_/             
 ::                                                                 
 if exist developerfiles.dev set developermode=[Active]
-set developermode=[Inactive]
+if not exist developerfiles.dev set developermode=[Inactive]
 set ipvformatsaccepted=[IPV4, IPV6]
 set safeipmode=[False]
 if %safeip%==%safeip% set safeipmode=[True]
 if exist developerfiles.dev set deviceexposure=[Hidden]
-set deviceexposure=[Always Shown]
+if not exist developerfiles.dev set deviceexposure=[Always Shown]
 :: start data vars
 ::
 ::               __ __ ________________     ____  __  ________        
@@ -98,7 +98,7 @@ set developercode=0000
 :mainscreen
 title IPST %version%
 set autosavefilename=savefile1
-mode 45,20
+mode 45,25
 cls
 echo [40;37m╔══════════════════════════════════════════╗
 echo [40;37m║
@@ -113,6 +113,7 @@ echo [40;37m║ [[40;31m3[40;37m] Change Target                        [40;3
 echo [40;37m║ [[40;31m4[40;37m] GeoLocation                          [40;37m║
 echo [40;37m║ [[40;31m5[40;37m] Settings                             [40;37m║
 echo [40;37m║ [[40;31m6[40;37m] Updates + Status                     [40;37m║
+echo [40;37m║ [[40;31m7[40;37m] Recent IP's                          [40;37m║ 
 echo [40;37m║                                          [40;37m║ 
 echo [40;37m╚══════════════════════════════════════════╝
 set choice=
@@ -124,6 +125,7 @@ if %choice%==3 goto changeip
 if %choice%==4 goto geolocation
 if %choice%==5 goto settings
 if %choice%==6 goto updates
+if %choice%==7 start recentips.txt && goto mainscreen
 if %choice%==cmd goto commandline
 if %choice%==commandline goto commandline
 goto wronginput
@@ -140,6 +142,7 @@ if %targetip%==%safeip% goto ipcannotwork
 if %iptype%==IPV4 goto continuetosite1
 goto wrongformat1
 :continuetosite1
+echo %targetip% Was Used [%time%] [%date%] [%iptype%]>>recentips.txt
 mode 67, 40
 curl http://ip-api.com/line/?fields=%targetip%,status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query
 echo.
@@ -175,6 +178,7 @@ if %iptype%==IPV4 goto continuetosite2
 if %iptype%==IPV6 goto continuetosite2
 goto wrongformat2
 :continuetosite2
+echo %targetip% Was Used [%time%] [%date%] [%iptype%]>>recentips.txt
 mode 67, 35
 curl https://ipapi.co/%targetip%/json/
 echo.
@@ -231,6 +235,7 @@ set /p usersetip=→
 if %usersetiptype%==IPV4 goto verifysetipsite1
 if %usersetiptype%==IPV6 goto verifysetipsite1
 :verifysetipsite1
+echo %targetip% Was Set As A Target [%time%] [%date%] [%usersetiptype%]>>recentips.txt
 echo ╔═════════════════════════════════════════════╗
 curl http://ip-api.com/line/%usersetip%?fields=query
 curl http://ip-api.com/line/%usersetip%?fields=status
@@ -440,7 +445,7 @@ echo                          [40;37m○○
 pause>nul
 goto mainscreen
 :settings
-mode 45,20
+mode 45,25
 cls
 echo [40;37m------------------Settings------------------
 echo.
@@ -468,7 +473,7 @@ goto activationerror && goto activatesoftware2
 :activatesoftware2
 cls
 set autosavefilename=savefile1
-mode 45,20
+mode 45,25
 cls
 echo [40;37m╔══════════════════════════════════════════╗
 echo [40;37m║
@@ -545,6 +550,17 @@ echo For Issues And Trouble Shooting, Please Refer to "Readme.md">>supportrecipt
 echo ----------------------------------------------------------->>supportrecipt.txt
 echo %activationkey%>>activationkey.ipst
 echo.
+:RECENTIPS
+echo     ____                       __  __         __  __              __   ________ _      >recentips.txt
+echo    / __ \___  ________  ____  / /_/ /_  __   / / / /_______  ____/ /  /  _/ __ ( )_____>>recentips.txt
+echo   / /_/ / _ \/ ___/ _ \/ __ \/ __/ / / / /  / / / / ___/ _ \/ __  /   / // /_/ /// ___/>>recentips.txt
+echo  / _, _/  __/ /__/  __/ / / / /_/ / /_/ /  / /_/ (__  )  __/ /_/ /  _/ // ____/ (__  ) >>recentips.txt
+echo /_/ l_l\___/\___/\___/_/ /_/\__/_/\__, /   \____/____/\___/\__,_/  /___/_/     /____/  >>recentips.txt
+echo                                  /____/                                              >>recentips.txt
+echo --------------------------------------------------------------------------------------->>recentips.txt
+echo.>>recentips.txt
+echo.>>recentips.txt
+
 echo Done!
 pause
 goto mainscreen
@@ -557,7 +573,7 @@ echo Please Enter Your Details
 echo -----------------------------------------------------------
 echo.
 set /p userdevelopercode=
-if %userdevelopercode%==%developercode% echo developerfiles.dev>>developerfiles.dev && goto mainscreen
+if %userdevelopercode%==%developercode% echo developerfiles.dev>>developerfiles.dev && goto RECENTIPS
 goto activatesoftware
 :developermodesetup
 cls
@@ -565,37 +581,129 @@ echo Granting Developermode
 echo developerfiles.dev>>developerfiles.dev
 timeout 3>nul
 goto mainscreen
-
-
-
 pause>nul
 goto mainscreen
+
+
 :updates
 cls
 set recentupdate=N/A
 echo Last Updated - [%recentupdate%]
 echo --------------------------------------------
-if exist updates.ipst echo [40;32mUPDATES AVAILABLE[40;37m
-if not exist updates.ipst echo [40;31mNO UPDATES AVAILABLE[40;37m
+if exist updates.ipst echo [40;32mUPDATES AVAILABLE[40;37m && set updatestatus=true
+if not exist updates.ipst echo [40;31mNO UPDATES AVAILABLE[40;37m && set updatestatus=false
 echo --------------------------------------------
 echo (1) Apply Updates
 echo (2) Diagnostics
 echo (3) Connect to IP DataBase
-echo (4) Wipe Data
+if not exist developerfiles.dev echo (4) Search For Developer Module
+if exist developerfiles.dev echo (4) Developer Options
+echo (5) Wipe Data
 echo --------------------------------------------
 set /p updatechoice=→ 
 if %updatechoice%==1 goto applyupdate
 if %updatechoice%==2 goto diagnose
 if %updatechoice%==3 goto connect
-if %updatechoice%==4 goto deletefiles
+if %updatechoice%==4 goto developersettings
+if %updatechoice%==5 goto deletefiles
 
-:applyupdates
+:developersettings
+if not exist developerfiles.dev goto searchfordevmodules
+cls
+echo (1) Start Command Line
+set /p developerchoice=: 
+if %developerchoice%==1 goto commandline
+goto developerchoice
+
+
+:applyupdate
+if %updatestatus%==true goto continueupdate
+if %updatestatus%==false goto noupdates
+goto noupdates
+
+
 :diagnose
+cls
+echo Check For Missing Files?
+set /p choice=(Y/N)
+if %choice%==y goto checkfiles
+if %choice%==Y goto checkfiles
+if %choice%==n goto mainscreen
+if %choice%==N goto mainscreen
+:checkfiles
+cls
+echo.
+if exist activationkey.ipst echo IP Activation File [[40;32mEXISTS[40;37m]
+if not exist activationkey.ipst echo IP Activation File [[40;31mMissing[40;37m]
+if exist developerfiles.dev echo Developer Files [[40;32mEXISTS[40;37m
+if not exist developerfiles.dev echo Developer Files [[40;31mMissing[40;37m]
+if exist recentips.txt echo Recent IP File [[40;32mEXISTS[40;37m
+if not exist recentips.txt echo Recent IP File [[40;31mMissing[40;37m]
+if exist supportrecipt.txt echo Support Reciept [[40;32mEXISTS[40;37m
+if not exist supportrecipt.txt echo Support Reciept [[40;31mMissing[40;37m]
+pause>nul
+goto mainscreen
 :connect
 :deletefiles
+cls
+echo Delete Files? && goto deletefilesconfirm
+:choiceconfirmed
+set /p choice=(Y/N)
+if %choice%==y goto delfiles
+if %choice%==Y goto delfiles
+if %choice%==n goto mainscreen
+if %choice%==N goto mainscreen
+:delfiles
 del "activationkey.ipst"
 del "supportrecipt.txt"
+if exist developerfiles.dev del developerfiles.dev
+del recentips.txt
 goto startscreen
+
+:searchfordevmodules
+cls
+if exist developermodule.insrt echo Developer Module Recieved, Activate? && goto activatedev
+echo Developer Module Has Not Been Found, Search Again? && goto searchagain
+:activatedev
+set /p choice=(Y/N)
+if %choice%==y goto unboxdevpackage
+if %choice%==Y goto unboxdevpackage
+if %choice%==n goto mainscreen
+if %choice%==N goto mainscreen
+goto searchfordevmodules
+
+:searchagain
+if %choice%==y goto searchfordevmodules
+if %choice%==Y goto searchfordevmodules
+if %choice%==n goto mainscreen
+if %choice%==N goto mainscreen
+goto searchfordevmodules
+
+:unboxdevpackage
+cls
+set unboxprocess=ACTIVE
+echo Unboxing Developer Module Package. [Process: %unboxprocess%]
+rename "developermodule.insrt" "developermodule.bat" && start developermodule.bat
+timeout 5 >nul
+echo Developer Package Has Been Used, Please Install a New Package>developermodule.bat
+rename "developermodule.bat" "developermodule.insrt"
+echo.
+set unboxprocess=FINISHED
+echo Unboxing Developer Module Package. [Process: %unboxprocess%]
+echo Process Finished! Clean Files?
+:cleanfileschoice
+set /p choice=(Y/N)
+if %choice%==y goto cleanfiles
+if %choice%==Y goto cleanfiles
+if %choice%==n goto mainscreen
+if %choice%==N goto mainscreen
+goto cleanfileschoice
+:cleanfiles
+if exist developermodule.bat del developermodule.bat
+if exist developermodule.insrt del developermodule.insrt
+echo Files Cleaned!
+pause>nul
+goto mainscreen
 
 :commandline
 if exist developerfiles.dev goto continuecmd
@@ -608,6 +716,7 @@ title CommandLine For IPST.
 echo.
 set /p commandlineinput= [40;32mIPST[40;37m/[40;31m%username%[40;32m→[40;37m 
 ::commands
+if %commandlineinput%==help goto helpcommand
 if %commandlineinput%==return goto mainscreen
 if %commandlineinput%==esc goto mainscreen
 if %commandlineinput%==escape goto mainscreen
@@ -624,6 +733,25 @@ if %commandlineinput%==showtimezone echo %TIMEZONE% && goto commandlinestart
 if %commandlineinput%==setsafeip goto resetsafeip
 if %commandlineinput%==whoami goto whoami
 
+:helpcommand
+cls
+echo Commands
+echo.
+echo help - brings up command menu
+echo return, esc, escape, exit - exits the command line, returns to the main menu
+echo cls, clear, clearscreen - clears previous commands
+echo changesettings - modifies built in settings that are modifyable using an IDE
+echo showip - displays ip address (IPV4)
+echo showgeolocation - displays geolocation
+echo showcountry - display region
+echo shownetworkorg - display the network organization
+echo showtimezone - displays timezone 
+echo setsafeip - sets a new safe ip
+echo whoami - shows the programinformation
+echo.
+goto commandlinestart
+
+
 :resetsafeip
 set /p safeip=
 echo [40;32mSafe Ip Changed To [%safeip%] [40;37m
@@ -636,7 +764,7 @@ echo (2)
 goto commandlinestart
 
 :whoami
-cls 
+echo.
 echo         _.-----._                              ║   IPST. Developed Release[2023] 
 echo       .'.-'''''-.'._                           ║   Native user:~~~~~%username%  
 echo      //          `\\\                          ║   Native computer:~%computername%
@@ -722,5 +850,18 @@ timeout 1 >nul
 del msgbox.vbs
 goto mainscreen
 
-::errorkeysend
+:deletefilesconfirm
+echo x=msgbox("All Files Will Be Deleted, And Customized Data Will Be Lost" ,32, "Confirm") >> msgbox.vbs
+start msgbox.vbs
+timeout 1 >nul
+del msgbox.vbs
+goto choiceconfirmed
 
+:noupdates
+echo x=msgbox("No Updates Are Available To Download, Check Github or Local Files" ,16, "No Updates Found") >> msgbox.vbs
+start msgbox.vbs
+timeout 1 >nul
+del msgbox.vbs
+goto updates
+
+::errorkeysend
