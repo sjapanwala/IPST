@@ -3,7 +3,7 @@ chcp 65001
 title IP Locator Advanced
 :startscreen
 mode 45,18
-set version=[0.3]
+set version=[0.35]
 rem  -----------------------------------------------------------
 rem 
 rem     __                                 ________                               
