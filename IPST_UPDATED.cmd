@@ -3,6 +3,7 @@ chcp 65001
 title IP Locator Advanced
 :startscreen
 mode 45,18
+set version=[0.3]
 rem  -----------------------------------------------------------
 rem 
 rem     __                                 ________                               
@@ -30,6 +31,7 @@ rem -----------------------------------------------------------
 set safeip=1.1.1.1
 set autosavestatus=false
 set autosavefilename=savefile1
+set credit=sjapanwala
 ::set githublink=
 :: start settings vars
 ::
@@ -39,7 +41,6 @@ set autosavefilename=savefile1
 ::/_____/_____/ /| |/ /___/ /___/ ____/  / /_/ / /_/ / / /_____/_____/
 ::           /_/ |_/_____/_____/_/       \____/\____/ /_/             
 ::                                                                 
-set version=[0.2]
 if exist developerfiles.dev set developermode=[Active]
 set developermode=[Inactive]
 set ipvformatsaccepted=[IPV4, IPV6]
@@ -92,6 +93,7 @@ set developercode=0000
 :: countires defined
 :mainscreengraphic
 :mainscreen
+title IPST %version%
 set autosavefilename=savefile1
 mode 45,20
 cls
@@ -119,6 +121,8 @@ if %choice%==3 goto changeip
 if %choice%==4 goto geolocation
 if %choice%==5 goto settings
 if %choice%==6 goto updates
+if %choice%==cmd goto commandline
+if %choice%==commandline goto commandline
 goto wronginput
 
 :wronginput
@@ -550,7 +554,7 @@ echo Please Enter Your Details
 echo -----------------------------------------------------------
 echo.
 set /p userdevelopercode=
-if %userdevelopercode%==%developercode% goto developermodesetup
+if %userdevelopercode%==%developercode% echo developerfiles.dev>>developerfiles.dev && goto mainscreen
 goto activatesoftware
 :developermodesetup
 cls
@@ -587,8 +591,60 @@ if %updatechoice%==4 goto deletefiles
 :connect
 :deletefiles
 del "activationkey.ipst"
-del "supportreciept.txt"
+del "supportrecipt.txt"
 goto startscreen
+
+:commandline
+if exist developerfiles.dev goto continuecmd
+goto devfilesmissing
+:continuecmd
+cls
+mode 95,15
+title CommandLine For IPST.
+:commandlinestart
+echo.
+set /p commandlineinput= [40;32mIPST[40;37m/[40;31m%username%[40;32m→[40;37m 
+::commands
+if %commandlineinput%==return goto mainscreen
+if %commandlineinput%==esc goto mainscreen
+if %commandlineinput%==escape goto mainscreen
+if %commandlineinput%==exit goto mainscreen
+if %commandlineinput%==cls goto continuecmd
+if %commandlineinput%==clear goto continuecmd
+if %commandlineinput%==clearscreen goto continuecmd
+if %commandlineinput%==changesettings goto changesettings
+if %commandlineinput%==showip echo %homeipv4% && goto commandlinestart
+if %commandlineinput%==showgeolocation echo %geolocation% && goto commandlinestart
+if %commandlineinput%==showcountry echo %country% && goto commandlinestart
+IF %commandlineinput%==shownetworkorg echo %networkorg% && goto commandlinestart
+if %commandlineinput%==showtimezone echo %TIMEZONE% && goto commandlinestart
+if %commandlineinput%==setsafeip goto resetsafeip
+if %commandlineinput%==whoami goto whoami
+
+:resetsafeip
+set /p safeip=
+echo [40;32mSafe Ip Changed To [%safeip%] [40;37m
+goto commandlinestart
+
+:changesettings
+cls
+echo (1)
+echo (2)
+goto commandlinestart
+
+:whoami
+cls 
+echo         _.-----._                              ║   IPST. Developed Release[2023] 
+echo       .'.-'''''-.'._                           ║   Native user:~~~~~%username%  
+echo      //          `\\\                          ║   Native computer:~%computername%
+echo     ;;  Internet   ;;'.__.===============,     ║   App version:~~~~~%version%
+echo     II  Protocol   II  __                 I    ║   Public Release:~~[Y]
+echo     ;;  Search     ;;.'  '==============='     ║   Github:~~~~~~~~~~[%credit%]
+echo      \\ Tool      ///                          ║
+echo       ':.._____..:'~                           ║
+echo         `'-----'`                              ║
+pause >nul
+goto continuecmd
 
 
 ::errror keys
@@ -655,6 +711,13 @@ start msgbox.vbs
 timeout 1 >nul
 del msgbox.vbs
 goto activatekey
+
+:devfilesmissing
+echo x=msgbox("This Feature Is Locked And Cannot Be Accessed With This Users Permissions, Please Check Readme.md For Further Assistance" ,16, "Developer Mode Feature Locked") >> msgbox.vbs
+start msgbox.vbs
+timeout 1 >nul
+del msgbox.vbs
+goto mainscreen
 
 ::errorkeysend
 
