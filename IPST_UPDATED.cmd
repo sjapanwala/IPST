@@ -22,6 +22,9 @@ rem             /____/                                         /____/
 :: - Added an Updates and Status Section.
 :: - Removed "Help", as it was not needed and the "Readme.md" file was a better alternative.
 :: - Even though an update and status section has been added, the buttons dont really do anything other than the "wipe data" button. it does show update files and all that but does not really do anything
+
+:: Version 0.3
+:: -Added a new terminal command line to the interface
 rem -----------------------------------------------------------
 
 
