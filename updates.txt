@@ -1,7 +1,7 @@
 =================================================================================
 Download The App: https://github.com/sjapanwala/IPST/blob/main/IPST_UPDATED.cmd
 =================================================================================
-__                                 ________                               
+    __                                 ________                               
    / /   ____  ____ ______     __     / ____/ /_  ____ _____  ____ ____  _____
   / /   / __ \/ __ `/ ___/  __/ /_   / /   / __ \/ __ `/ __ \/ __ `/ _ \/ ___/
  / /___/ /_/ / /_/ (__  )  /_  __/  / /___/ / / / /_/ / / / / /_/ /  __(__  ) 
@@ -11,11 +11,22 @@ __                                 ________
 -----------------------------------------------------------------------------
        LOGS AND CHANGES. NEW UPDATES AND VERSION INFORMATION
 -----------------------------------------------------------------------------
+GUIDE:
+
+Version Releases: Released version number is included in the header. Any changes will be provided under, including a brief explanation on what the change is, why it is important, and how it changes the trajectory of the program.
+
+Future Release: ("Future Release" are titled as "(version #) Preview". They will showcase POSSIBLE future updates that are to come in the next versions. While these updates are very likely, they arent a 100 percent garunteed. Future Release will be replaces with the actual update log, and a preview for the next update will be released.)
 
 --------------------------------Version 0.1---------------------------------
-- Launch Version
-- All Features Added
-- Free To Use
+> Launch Version
+   - Search Tool #1
+   - Search Tool #2
+   - Change Target IP
+   - Geolocation
+   - Help
+> All Features Added
+> Free To Use
+> Anyone who downloaded this version has access to the founders pass which enables all developer features, and experimental features
 --------------------------------Version 0.2---------------------------------
 > Added Activation Key.
   - You will be required to purchase a key, or will be required to input a provided key
@@ -35,5 +46,26 @@ __                                 ________
   - Connecting to the database allows you to send more connections as you are connected to IPST servers.
   - Sending a your "supportreciept.txt" to us will give you access to the server, free of cost (as of now, if you are a member and price changes, you will not be required to pay)
 > Removed "Help" as "Readme.md" was a better alternative
-
+--------------------------------Version 0.3---------------------------------
+> Added a new terminal command line to the interface
+   - To access command line, when the main interface is launched, type "cmd" or "commandline"
+   - To exit commandline, type "esc", "escape" or, "exit"
+   - Command help can be accessed with "help"
+   - Custom commands can be written and injected
+   - While this is still an IP Tool, since its based off MSDOS, it can still perform the same functions as a regular terminal can, and can create shortcuts
+   - Graphics interface got buggy and would limit customization to the program
+   - All functions can still be used through the command line
+   - Functions can be brute forced through the commandline, this will cause them to work unexpectedly and will cause errors in the output
+   - Currently only accessable to developers, or individuals with developerfile access
+> Future Terminal Commands
+   - Experimental Mode
+   - Hard Launch/Soft Launch
+--------------------------------Version 0.4 Preview--------------------------
+("Future Release" will showcase POSSIBLE future updates that are to come in the next versions. While these updates are very likely, they arent a 100 percent garunteed. Future Release will be replaces with the actual update log, and a preview for the next update will be released.)
+> Future Updates
+   - Remodelling activation screen
+   - Creating profiles that can be logged in and logged out
+   - Aesthetic Customization
+   - More Terminal Commands
+   - "Updates + Status" Update
 
